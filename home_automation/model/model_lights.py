@@ -15,7 +15,7 @@ class ModelLights(Model):
     def save_light(self, name, status=0):
         sql = """INSERT INTO lights(name, status, creation_date)
                  VALUES(?, ?, ?)"""
-        creation_date = datetime.now()
+        creation_date = datetime.now()  # DOCUMENT-IT
         return self._exec(sql, (name, status, creation_date))
 
     def delete_light(self, id):
@@ -25,3 +25,5 @@ class ModelLights(Model):
     def update_status(self, id, status):
         sql = """UPDATE lights SET status=? WHERE id=?"""
         return self._exec(sql, (status, id))
+
+    # update name
