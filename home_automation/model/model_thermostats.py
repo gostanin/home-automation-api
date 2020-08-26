@@ -1,4 +1,4 @@
-from model import Model
+from home_automation.model.model import Model
 
 
 class ModelThermostats(Model):

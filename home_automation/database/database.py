@@ -37,8 +37,8 @@ def create_lights(conn):
     sql_create_ligths = """ CREATE TABLE IF NOT EXISTS lights (
                                 id integer PRIMARY KEY,
                                 name text NOT NULL,
-                                status integer default 0
-                                creation_date text,
+                                status integer default 0,
+                                creation_date text
                             ); """
     create_table(conn, sql_create_ligths)
 
@@ -47,8 +47,8 @@ def create_thermostats(conn):
     sql_create_thermostats = """CREATE TABLE IF NOT EXISTS thermostats (
                                     id integer PRIMARY KEY,
                                     name text NOT NULL,
-                                    temp integer default 0
-                                    creation_date text,
+                                    temp integer default 0,
+                                    creation_date text
                                 );"""
     create_table(conn, sql_create_thermostats)
 
