@@ -1,5 +1,7 @@
 import logging
 
+from flasgger import Swagger
+
 from home_automation.app_factory import create_app
 from home_automation.database.database import create_database
 
@@ -18,5 +20,6 @@ if __name__ == "__main__":
     logger.info("--------Application start-------")
     create_database()
     app = create_app()
+    Swagger(app)
     app.run(port=app.config['PORT'])
     logger.info("--------Application stop--------")
