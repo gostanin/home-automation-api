@@ -14,4 +14,4 @@ APPLICATION_ROOT = '/api/v1'
 ALLOWED_CORS_ORIGINS = config('ALLOWED_CORS_ORIGINS', default='*')
 
 
-DB_PATH = config('DB_PATH', default=f'{ROOT_DIR}/home_automation/database/database.db', cast=str)
+DB_PATH = config('DB_PATH', default=f'{ROOT_DIR}/database/database.db', cast=str)

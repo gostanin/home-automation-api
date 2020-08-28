@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 from pathlib import Path
 
-from home_automation.settings import DB_PATH, ROOT_DIR
+from home_automation.settings import DB_PATH
 
 
 def _get_connection(db_file):
@@ -55,7 +55,7 @@ def _create_thermostats(conn):
 
 
 def create_database():
-    db = Path(f'{ROOT_DIR}/home_automation/database/database.db')
+    db = Path(f'{DB_PATH}/database.db')
     if not db.exists:
         conn = _get_connection(DB_PATH)
 

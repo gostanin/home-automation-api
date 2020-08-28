@@ -141,6 +141,7 @@ cython_debug/
 
 
 # Project specific
-**/database/
+/logs/
+/database/
 **/__pycache__/
 *.test

@@ -4,10 +4,10 @@ from flasgger import Swagger
 
 from home_automation.app_factory import create_app
 from home_automation.database.database import create_database
-
+from home_automation.settings import ROOT_DIR
 
 logging.basicConfig(level=logging.INFO,
-                    filename='home_automation.log',
+                    filename=f'{ROOT_DIR}/logs/home_automation.log',
                     datefmt='%Y-%m-%S %H:%M:%S',
                     format='%(levelname)s - %(asctime)s / %(message)s / %(name)s / line: %(lineno)d'
                     )
@@ -22,4 +22,3 @@ if __name__ == "__main__":
     app = create_app()
     Swagger(app)
     app.run(port=app.config['PORT'], host="0.0.0.0")
-    logger.info("--------Application stop--------")
