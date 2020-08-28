@@ -1,8 +1,12 @@
+import logging
+
 from flask import Blueprint, request, jsonify
 
 from home_automation.model.model_factory import get_model_thermostats
 
 thermostats = Blueprint('thermostats', __name__)
+
+logger = logging.getLogger(__name__)
 
 
 @thermostats.route('/', methods=['GET'], strict_slashes=False)
@@ -10,8 +14,10 @@ def get_thermostats():
     res = None
     try:
         res = get_model_thermostats().get_thermostats()
-    except Exception as e:
-        print(e)
+        logger.info('[GET] Thermostats all')
+    except Exception:
+        logger.exception('[GET] Thermostats all exception')
+        return jsonify('Unexpected error occured while getting thermostats'), 500
 
     return jsonify(res), 200
 
@@ -19,13 +25,16 @@ def get_thermostats():
 @thermostats.route('/<int:id>', methods=['GET'], strict_slashes=False)
 def get_thermostat(id):
     if id < 1:
-        return jsonify('Thermostats\' id must be strictly greater than 0'), 400
+        logger.warning(f'[GET] Incorrect thermostat id: {id}')
+        return jsonify('Thermostats id must be strictly greater than 0'), 400
 
     res = None
     try:
         res = get_model_thermostats().get_thermostat(id)
-    except Exception as e:
-        print(e)
+        logger.info(f'[GET] Thermostat id: {id}')
+    except Exception:
+        logger.exception('[GET] Thermostats all exception')
+        return jsonify('Unexpected error occured while getting thermostat'), 500
 
     return jsonify(res), 200
 
@@ -35,22 +44,26 @@ def save_thermostat():
     data = request.get_json()
 
     if not data:
-        return 'Thermostats\' data is missing', 400
+        logger.warning('[POST] Thermostats request body is empty')
+        return 'Thermostats data is missing', 400
 
     name = data.get('name')
     temp = data.get('temp')
 
     if not name:
-        return 'Thermostats\' data is missing parameter: name', 400
+        logger.warning('[POST] Thermostats request body has no [name]')
+        return 'Thermostats data is missing parameter: name', 400
     if not temp:
-        return 'Thermostats\' data is missing parameter: temp', 400
+        logger.warning('[POST] Thermostats request body has no [temp]')
+        return 'Thermostats data is missing parameter: temp', 400
 
     res = None
     try:
         res = get_model_thermostats().save_thermostat(name, temp)
-    except Exception as e:
-        # logging
-        return jsonify(f'Unexpected error occured while getting the Thermostats | {e}'), 500
+        logger.info(f'[POST] Thermostat added name: {name}, temp: {temp}')
+    except Exception:
+        logger.exception('[POST] Thermostats exception')
+        return jsonify('Unexpected error occured while saving thermostat'), 500
 
     return jsonify(res), 201
 
@@ -58,13 +71,16 @@ def save_thermostat():
 @thermostats.route('/<int:id>', methods=['DELETE'], strict_slashes=False)
 def remove_thermostat(id):
     if id < 1:
-        return jsonify('Thermostats\' id must be strictly greater than 0'), 400
+        logger.warning(f'[DELETE] Incorrect thermostat id: {id}')
+        return jsonify('Thermostats id must be strictly greater than 0'), 400
 
     res = None
     try:
         res = get_model_thermostats().delete_thermostat(id)
-    except Exception as e:
-        return jsonify(f'Unexpected error occured while getting the Thermostats | {e}'), 500
+        logger.info(f'[DELETE] Thermostat id: {id}')
+    except Exception:
+        logger.exception('[DELETE] Thermostats exception')
+        return jsonify('Unexpected error occured while removing thermostat'), 500
 
     return jsonify(res), 200
 
@@ -74,19 +90,24 @@ def update_temp(id):
     data = request.get_json()
 
     if not data:
-        return jsonify('Thermostats\'s no data'), 400
+        logger.warning(f'[PUT] Thermostats request body is empty for id: {id}')
+        return jsonify('Thermostats data is missing'), 400
     if id < 1:
-        return jsonify('Thermostats\'s id must be strictly greater than 0'), 400
+        logger.warning(f'[PUT] Incorrect thermostat id: {id}')
+        return jsonify('Thermostats id must be strictly greater than 0'), 400
 
     temp = data.get('temp')
 
     if not temp:
-        return jsonify('Thermostats\'s temp must be'), 400
+        logger.warning(f'[PUT] Thermostats request body has no [temp] for id: {id}')
+        return jsonify('Thermostats data is missing parameter: temp'), 400
 
     res = None
     try:
         res = get_model_thermostats().update_temp(id, temp)
-    except Exception as e:
-        return jsonify(f'Unexpected error occured while getting the Thermostats | {e}'), 500
+        logger.info(f'[PUT] Thermostat has been updated id: {id}, temp: {temp}')
+    except Exception:
+        logger.exception('[PUT] Thermostats exception')
+        return jsonify('Unexpected error occured while updating thermostat'), 500
 
     return jsonify(res), 200

@@ -1,10 +1,11 @@
 import sqlite3
 from sqlite3 import Error
+from pathlib import Path
 
-from home_automation.settings import DB_PATH
+from home_automation.settings import DB_PATH, ROOT_DIR
 
 
-def get_connection(db_file):
+def _get_connection(db_file):
     """ create a database connection to the SQLite database
         specified by db_file
     :param db_file: database file
@@ -20,7 +21,7 @@ def get_connection(db_file):
     return conn
 
 
-def create_table(conn, create_table_sql):
+def _create_table(conn, create_table_sql):
     """ create a table from the create_table_sql statement
     :param conn: Connection object
     :param create_table_sql: a CREATE TABLE statement
@@ -33,34 +34,36 @@ def create_table(conn, create_table_sql):
         print(e)
 
 
-def create_lights(conn):
+def _create_lights(conn):
     sql_create_ligths = """ CREATE TABLE IF NOT EXISTS lights (
                                 id integer PRIMARY KEY,
                                 name text NOT NULL,
                                 status integer default 0,
                                 creation_date text
                             ); """
-    create_table(conn, sql_create_ligths)
+    _create_table(conn, sql_create_ligths)
 
 
-def create_thermostats(conn):
+def _create_thermostats(conn):
     sql_create_thermostats = """CREATE TABLE IF NOT EXISTS thermostats (
                                     id integer PRIMARY KEY,
                                     name text NOT NULL,
                                     temp integer default 0,
                                     creation_date text
                                 );"""
-    create_table(conn, sql_create_thermostats)
+    _create_table(conn, sql_create_thermostats)
 
 
-def main():
-    conn = get_connection(DB_PATH)
+def create_database():
+    db = Path(f'{ROOT_DIR}/home_automation/database/database.db')
+    if not db.exists:
+        conn = _get_connection(DB_PATH)
 
-    create_lights(conn)
-    create_thermostats(conn)
+        _create_lights(conn)
+        _create_thermostats(conn)
 
-    conn.close()
+        conn.close()
 
 
 if __name__ == "__main__":
-    main()
+    create_database()
