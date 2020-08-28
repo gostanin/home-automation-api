@@ -21,5 +21,5 @@ if __name__ == "__main__":
     create_database()
     app = create_app()
     Swagger(app)
-    app.run(port=app.config['PORT'])
+    app.run(port=app.config['PORT'], host="0.0.0.0")
     logger.info("--------Application stop--------")
