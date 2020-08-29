@@ -105,21 +105,26 @@ def save_thermostat():
     ---
     tags: [Thermostats]
     parameters:
-      - name: name
-        in: query
-        type: string
-        required: true
-      - name: temp
-        minimum: -300
-        maximum: 300
-        in: query
-        type: integer
-        required: true
+      - name: Thermostat
+        in: body
+        description: Thermostat to create
+        schema:
+            type: object
+            required:
+              - name
+              - temp
+            properties:
+              name:
+                type: string
+              temp:
+                type: integer
+                minimum: -300
+                maximum: 300
     responses:
         204:
             description: Thermostat created
         400:
-            description: Data missing - empty query or [name] or [temp]
+            description: Data missing - empty body or [name] or [temp]
             schema:
                 $ref: '#/definitions/Bad request'
         500:
@@ -205,10 +210,17 @@ def update_temp(id):
         type: integer
         minimum: 1
         required: true
-      - name: temp
-        in: query
-        type: integer
-        required: true
+      - name: Thermostat temperature
+        in: body
+        schema:
+            type: object
+            required:
+              - temp
+            properties:
+              temp:
+                type: integer
+                minimum: -300
+                maximum: 300
     responses:
         204:
             description: Thermostat temperature updated
@@ -260,10 +272,15 @@ def update_name(id):
         type: integer
         minimum: 1
         required: true
-      - name: name
-        in: query
-        type: string
-        required: true
+      - name: Thermostat name
+        in: body
+        schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
     responses:
         204:
             description: Thermostat name updated

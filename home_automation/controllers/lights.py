@@ -95,21 +95,24 @@ def save_light():
     ---
     tags: [Lights]
     parameters:
-      - name: name
-        in: query
-        type: string
-        required: true
-      - name: status
-        enum: [0, 1]
-        in: query
-        type: integer
-        required: false
-        default: 0
+      - name: Light to create
+        in: body
+        schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              status:
+                type: integer
+                default: 0
+                enum: [0, 1]
     responses:
         204:
-            description: Thermostat created
+            description: Light created
         400:
-            description: Data missing - empty query or [name]
+            description: Data missing - empty body or [name]
             schema:
                 $ref: '#/definitions/Bad request'
         500:
@@ -134,7 +137,7 @@ def save_light():
         status = 0
     if status > 1 or status < 0:
         logger.warning('[POST] Lights status must be either 0 or 1')
-        return jsonify(message='Light data is missing parameter: name'), 400
+        return jsonify(message='Light data is out of range[0, 1] parameter: name'), 400
 
     try:
         get_model_lights().save_light(name, status)
@@ -270,10 +273,15 @@ def update_name(id):
         type: integer
         minimum: 1
         required: true
-      - name: name
-        in: query
-        type: string
-        required: true
+      - name: Light name to update
+        in: body
+        schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
     responses:
         204:
             description: Name was updated
