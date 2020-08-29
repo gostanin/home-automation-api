@@ -26,4 +26,6 @@ class ModelLights(Model):
         sql = """UPDATE lights SET status=? WHERE id=?"""
         return self._exec(sql, (status, id))
 
-    # update name
+    def update_name(self, id, name):
+        sql = """UPDATE lights SET name=? WHERE id=?"""
+        return self._exec(sql, (name, id))

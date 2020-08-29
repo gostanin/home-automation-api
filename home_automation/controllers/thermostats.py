@@ -189,7 +189,7 @@ def remove_thermostat(id):
     return '', 204
 
 
-@thermostats.route('/<int:id>', methods=['PUT'], strict_slashes=False)
+@thermostats.route('/<int:id>/temp', methods=['PUT'], strict_slashes=False)
 def update_temp(id):
     """Updates thermostat temperature
     ---
@@ -219,7 +219,7 @@ def update_temp(id):
     data = request.get_json()
 
     if not data:
-        logger.warning(f'[PUT] Thermostats request body is empty for id: {id}')
+        logger.warning(f'[PUT] Thermostats request body for update temp is empty for id: {id}')
         return jsonify('Thermostats data is missing'), 400
     if id < 1:
         logger.warning(f'[PUT] Incorrect thermostat id: {id}')
@@ -234,6 +234,58 @@ def update_temp(id):
     try:
         get_model_thermostats().update_temp(id, temp)
         logger.info(f'[PUT] Thermostat has been updated id: {id}, temp: {temp}')
+    except Exception:
+        logger.exception('[PUT] Thermostats exception')
+        return jsonify('Unexpected error occured while updating thermostat'), 500
+
+    return '', 204
+
+
+@thermostats.route('/<int:id>/name', methods=['PUT'], strict_slashes=False)
+def update_name(id):
+    """Updates thermostat name
+    ---
+    tags: [Thermostats]
+    parameters:
+      - name: id
+        in: path
+        type: integer
+        minimum: 1
+        required: true
+      - name: name
+        in: query
+        type: string
+        required: true
+    responses:
+        204:
+            description: Thermostat name updated
+        400:
+            description: id less than 1 or data missing - [name]
+            schema:
+                $ref: '#/definitions/Bad request'
+        500:
+            description: Internal error
+            schema:
+                $ref: '#/definitions/Error'
+    """
+    data = request.get_json()
+
+    if not data:
+        logger.warning(f'[PUT] Thermostats request body for update name is empty for id: {id}')
+        return jsonify('Thermostats data is missing'), 400
+    if id < 1:
+        logger.warning(f'[PUT] Incorrect thermostat id: {id}')
+        return jsonify('Thermostats id must be strictly greater than 0'), 400
+
+    name = data.get('name')
+
+    if not name:
+        logger.warning(f'[PUT] Thermostats request body has no [name] for id: {id}')
+        return jsonify('Thermostats data is missing parameter: name'), 400
+
+    try:
+        get_model_thermostats().update_name(id, name)
+        logger.info(f'[PUT] Thermostat has been updated id: {id}, temp: {name}')
     except Exception:
         logger.exception('[PUT] Thermostats exception')
         return jsonify('Unexpected error occured while updating thermostat'), 500

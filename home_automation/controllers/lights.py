@@ -231,7 +231,7 @@ def off_light(id):
       - name: id
         in: path
         type: integer
-        minimum: 1
+        minimum: 1`
         required: true
     responses:
         204:
@@ -258,4 +258,50 @@ def off_light(id):
 
     return '', 204
 
-# TO-DO turning all lights off and on. Not supporting on backend
+
+@lights.route('/<int:id>/name', methods=['PUT'], strict_slashes=False)
+def update_name(id):
+    """Updates light name
+    ---
+    tags: [Lights]
+    parameters:
+      - name: id
+        in: path
+        type: integer
+        minimum: 1
+        required: true
+      - name: name
+        in: query
+        type: string
+        required: true
+    responses:
+        204:
+            description: Name was updated
+        400:
+            description: id less than 1 or data body is missing
+            schema:
+                $ref: '#/definitions/Bad request'
+        500:
+            description: Internal error
+            schema:
+                $ref: '#/definitions/Error'
+    """
+    data = request.get_json()
+
+    if not data:
+        logger.warning('[PUT] Lights request body for update name is empty')
+        return jsonify(message='Light data is missing'), 400
+    if id < 1:
+        logger.warning(f'[PUT] Incorrect light id: {id} for update name')
+        return jsonify(message='Light id must be strictly greater than 0'), 400
+
+    name = data.get('name')
+
+    try:
+        get_model_lights().update_name(id, name)
+        logger.info(f'[PUT] Light name has been updated for id: {id}')
+    except Exception:
+        logger.exception('[PUT] Light update name exception')
+        return jsonify(message='Unexpected error occured while updating name'), 500
+
+    return '', 204

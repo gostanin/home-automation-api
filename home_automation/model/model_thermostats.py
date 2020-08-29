@@ -27,5 +27,5 @@ class ModelThermostats(Model):
         return self._exec(sql, (temp, id))
 
     def update_name(self, id, name):
-        sql = """UPDATE  thermostats SET name=? WHERE id=?"""
+        sql = """UPDATE thermostats SET name=? WHERE id=?"""
         return self._exec(sql, (name, id))
