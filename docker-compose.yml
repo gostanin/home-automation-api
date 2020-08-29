@@ -2,6 +2,7 @@ version: "3.8"
 services:
   api:
     build: .
+    image: home-automation-api
     environment:
       DEBUG: "false"
     ports:
