@@ -18,9 +18,7 @@ def get_return_value():
 @patch('home_automation.controllers.lights.get_model_lights')
 def test_get_lights_200(get_model_lights, get_test_client, get_return_value):
     with get_test_client as app:
-        get_lights_return = [get_return_value]
-
-        get_model_lights().get_lights.return_value = get_lights_return
+        get_model_lights().get_lights.return_value = [get_return_value]
 
         result = app.get('/api/v1/lights')
         data = json.loads(result.data)
@@ -79,8 +77,6 @@ def test_get_light_500(get_model_lights, get_test_client):
         data = json.loads(result.data)
         assert result.status_code == 500
         assert data['message']
-
-        get_model_lights().get_light.assert_called_once_with(1)
 
 
 @pytest.mark.parametrize('request_body',
@@ -201,7 +197,7 @@ def test_off_lights_400(get_test_client):
 
 
 @patch('home_automation.controllers.lights.get_model_lights')
-def test_ff_lights_500(get_model_lights, get_test_client):
+def test_off_lights_500(get_model_lights, get_test_client):
     with get_test_client as app:
         get_model_lights().update_status.side_effect = Exception()
 

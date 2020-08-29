@@ -110,6 +110,8 @@ def save_thermostat():
         type: string
         required: true
       - name: temp
+        minimum: -300
+        maximum: 300
         in: query
         type: integer
         required: true
@@ -137,9 +139,12 @@ def save_thermostat():
     if not name:
         logger.warning('[POST] Thermostats request body has no [name]')
         return jsonify(message='Thermostats data is missing parameter: name'), 400
-    if not temp:
+    if not temp and temp != 0:
         logger.warning('[POST] Thermostats request body has no [temp]')
         return jsonify(message='Thermostats data is missing parameter: temp'), 400
+    if temp > 300 or temp < -300:
+        logger.warning('[POST] Thermostats [temp] is out of range[-300, 300]')
+        return jsonify(message='Thermostats data is out of range[-300, 300] parameter: temp'), 400
 
     try:
         get_model_thermostats().save_thermostat(name, temp)
@@ -220,23 +225,26 @@ def update_temp(id):
 
     if not data:
         logger.warning(f'[PUT] Thermostats request body for update temp is empty for id: {id}')
-        return jsonify('Thermostats data is missing'), 400
+        return jsonify(message='Thermostats data is missing'), 400
     if id < 1:
         logger.warning(f'[PUT] Incorrect thermostat id: {id}')
-        return jsonify('Thermostats id must be strictly greater than 0'), 400
+        return jsonify(message='Thermostats id must be strictly greater than 0'), 400
 
     temp = data.get('temp')
 
     if not temp:
         logger.warning(f'[PUT] Thermostats request body has no [temp] for id: {id}')
-        return jsonify('Thermostats data is missing parameter: temp'), 400
+        return jsonify(message='Thermostats data is missing parameter: temp'), 400
+    if temp > 300 or temp < -300:
+        logger.warning('[PUT] Thermostats [temp] is out of range[-300, 300]')
+        return jsonify(message='Thermostats data is out of range[-300, 300] parameter: temp'), 400
 
     try:
         get_model_thermostats().update_temp(id, temp)
         logger.info(f'[PUT] Thermostat has been updated id: {id}, temp: {temp}')
     except Exception:
         logger.exception('[PUT] Thermostats exception')
-        return jsonify('Unexpected error occured while updating thermostat'), 500
+        return jsonify(message='Unexpected error occured while updating thermostat'), 500
 
     return '', 204
 
@@ -272,22 +280,22 @@ def update_name(id):
 
     if not data:
         logger.warning(f'[PUT] Thermostats request body for update name is empty for id: {id}')
-        return jsonify('Thermostats data is missing'), 400
+        return jsonify(message='Thermostats data is missing'), 400
     if id < 1:
         logger.warning(f'[PUT] Incorrect thermostat id: {id}')
-        return jsonify('Thermostats id must be strictly greater than 0'), 400
+        return jsonify(message='Thermostats id must be strictly greater than 0'), 400
 
     name = data.get('name')
 
     if not name:
         logger.warning(f'[PUT] Thermostats request body has no [name] for id: {id}')
-        return jsonify('Thermostats data is missing parameter: name'), 400
+        return jsonify(message='Thermostats data is missing parameter: name'), 400
 
     try:
         get_model_thermostats().update_name(id, name)
         logger.info(f'[PUT] Thermostat has been updated id: {id}, temp: {name}')
     except Exception:
         logger.exception('[PUT] Thermostats exception')
-        return jsonify('Unexpected error occured while updating thermostat'), 500
+        return jsonify(message='Unexpected error occured while updating thermostat'), 500
 
     return '', 204
