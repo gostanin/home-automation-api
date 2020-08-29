@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from sqlite3 import Error
 
@@ -9,10 +10,8 @@ class Model():
         conn = None
         try:
             conn = sqlite3.connect(DB_PATH)
-        except Error as e:
-            # logging here
-            print(e)
-            pass
+        except Error:
+            logging.exception(f'Could not connect to a database: {DB_PATH}')
 
         return conn
 

@@ -134,7 +134,7 @@ def save_light():
         status = 0
     if status > 1 or status < 0:
         logger.warning('[POST] Lights status must be either 0 or 1')
-        return jsonify(messge='Light data is missing parameter: name'), 400
+        return jsonify(message='Light data is missing parameter: name'), 400
 
     try:
         get_model_lights().save_light(name, status)
@@ -296,6 +296,10 @@ def update_name(id):
         return jsonify(message='Light id must be strictly greater than 0'), 400
 
     name = data.get('name')
+
+    if not name:
+        logger.warning('[PUT] Lights request body has no [name]')
+        return jsonify(message='Light data is missing parameter: name'), 400
 
     try:
         get_model_lights().update_name(id, name)

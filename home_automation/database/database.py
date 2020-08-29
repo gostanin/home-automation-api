@@ -51,17 +51,15 @@ def _create_thermostats(conn):
                                     temp integer default 0,
                                     creation_date text
                                 );"""
-    _create_table(conn, sql_create_thermostats)
+    print(_create_table(conn, sql_create_thermostats))
 
 
 def create_database():
-    db = Path(f'{DB_PATH}/database.db')
-    if not db.exists:
+    db = Path(DB_PATH)
+    if not db.exists():
         conn = _get_connection(DB_PATH)
-
         _create_lights(conn)
         _create_thermostats(conn)
-
         conn.close()
 
 
