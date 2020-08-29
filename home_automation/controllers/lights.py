@@ -95,7 +95,7 @@ def save_light():
     ---
     tags: [Lights]
     parameters:
-      - name: Light to create
+      - name: Light
         in: body
         schema:
             type: object
@@ -234,7 +234,7 @@ def off_light(id):
       - name: id
         in: path
         type: integer
-        minimum: 1`
+        minimum: 1
         required: true
     responses:
         204:
@@ -273,7 +273,7 @@ def update_name(id):
         type: integer
         minimum: 1
         required: true
-      - name: Light name to update
+      - name: Light name
         in: body
         schema:
             type: object

@@ -107,7 +107,7 @@ def save_thermostat():
     parameters:
       - name: Thermostat
         in: body
-        description: Thermostat to create
+        description: Temperature value in range [-300, 300]
         schema:
             type: object
             required:
@@ -212,6 +212,7 @@ def update_temp(id):
         required: true
       - name: Thermostat temperature
         in: body
+        description: Temperature value in range [-300, 300]
         schema:
             type: object
             required:
