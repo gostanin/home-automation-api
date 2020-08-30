@@ -210,7 +210,7 @@ def test_update_name_204(get_model_thermostats, get_test_client):
                              {'id': 1, 'request_body': None},
                              {'id': 0, 'request_body': {'name': 'Test change name'}},
                              {'id': 1, 'request_body': {'name': ''}},
-                             {'id': 1, 'request_body': {'name': 1}},
+                             {'id': 1, 'request_body': {'name': 1}}
                          ])
 def test_update_name_400(get_test_client, request_dict):
     with get_test_client as app:
