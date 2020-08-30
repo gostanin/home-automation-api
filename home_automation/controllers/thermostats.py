@@ -141,6 +141,13 @@ def save_thermostat():
     name = data.get('name')
     temp = data.get('temp')
 
+    if not isinstance(name, str):
+        logger.warning('[POST] Thermostats request body incorrect value type for name:string')
+        return jsonify(message='Thermostats request body incorrect value type for name:string'), 400
+    if not isinstance(temp, int):
+        logger.warning('[POST] Thermostats request body incorrect value type for temp:integer')
+        return jsonify(message='Thermostats request body incorrect value type for temp:integer'), 400
+
     if not name:
         logger.warning('[POST] Thermostats request body has no [name]')
         return jsonify(message='Thermostats data is missing parameter: name'), 400
@@ -245,6 +252,10 @@ def update_temp(id):
 
     temp = data.get('temp')
 
+    if not isinstance(temp, int):
+        logger.warning('[PUT] Thermostats request body incorrect value type for temp:integer')
+        return jsonify(message='Thermostats request body incorrect value type for temp:integer'), 400
+
     if not temp:
         logger.warning(f'[PUT] Thermostats request body has no [temp] for id: {id}')
         return jsonify(message='Thermostats data is missing parameter: temp'), 400
@@ -304,6 +315,10 @@ def update_name(id):
         return jsonify(message='Thermostats id must be strictly greater than 0'), 400
 
     name = data.get('name')
+
+    if not isinstance(name, str):
+        logger.warning('[POST] Thermostats request body incorrect value type for name:string')
+        return jsonify(message='Thermostats request body incorrect value type for name:string'), 400
 
     if not name:
         logger.warning(f'[PUT] Thermostats request body has no [name] for id: {id}')

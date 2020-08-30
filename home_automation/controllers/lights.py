@@ -129,6 +129,13 @@ def save_light():
     name = data.get('name')
     status = data.get('status')
 
+    if not isinstance(name, str):
+        logger.warning('[POST] Lights request body incorrect value type name:string')
+        return jsonify(message='Lights request body incorrect value type for name:string'), 400
+    if not isinstance(status, int):
+        logger.warning('[POST] Lights request body incorrect value type status:integer')
+        return jsonify(message='Lights request body incorrect value type for status:integer'), 400
+
     if not name:
         logger.warning('[POST] Lights request body has no [name]')
         return jsonify(message='Light data is missing parameter: name'), 400
@@ -304,6 +311,10 @@ def update_name(id):
         return jsonify(message='Light id must be strictly greater than 0'), 400
 
     name = data.get('name')
+
+    if not isinstance(name, str):
+        logger.warning('[PUT] Lights request body incorrect value type name:string')
+        return jsonify(message='Lights request body incorrect value type for name:string'), 400
 
     if not name:
         logger.warning('[PUT] Lights request body has no [name]')
