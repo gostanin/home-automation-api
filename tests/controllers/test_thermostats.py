@@ -102,7 +102,9 @@ def test_save_thermostat_204(get_model_thermostats, get_test_client, request_bod
                              {'name': '', 'temp': 64},
                              {'name': 'Test thermostat', 'temp': None},
                              {'name': 'Test thermostat', 'temp': -301},
-                             {'name': 'Test thermostat', 'temp': 301}
+                             {'name': 'Test thermostat', 'temp': 301},
+                             {'name': 'Test thermostat', 'temp': "not integer"},
+                             {'name': 1, 'temp': "not integer"},
                          ])
 def test_save_thermostat_400(get_test_client, request_body):
     with get_test_client as app:
@@ -165,10 +167,11 @@ def test_update_temp_204(get_model_thermostats, get_test_client):
 @pytest.mark.parametrize('request_dict',
                          [
                              {'id': 1, 'request_body': None},
-                             {'id': 0, 'request_body': {'temp': 64}},
                              {'id': 1, 'request_body': {'temp': None}},
+                             {'id': 0, 'request_body': {'temp': 64}},
                              {'id': 1, 'request_body': {'temp': -301}},
-                             {'id': 1, 'request_body': {'temp': 301}}
+                             {'id': 1, 'request_body': {'temp': 301}},
+                             {'id': 1, 'request_body': {'temp': "Not integer"}}
                          ])
 def test_update_temp_400(get_test_client, request_dict):
     with get_test_client as app:
@@ -206,7 +209,8 @@ def test_update_name_204(get_model_thermostats, get_test_client):
                          [
                              {'id': 1, 'request_body': None},
                              {'id': 0, 'request_body': {'name': 'Test change name'}},
-                             {'id': 1, 'request_body': {'name': ''}}
+                             {'id': 1, 'request_body': {'name': ''}},
+                             {'id': 1, 'request_body': {'name': 1}},
                          ])
 def test_update_name_400(get_test_client, request_dict):
     with get_test_client as app:

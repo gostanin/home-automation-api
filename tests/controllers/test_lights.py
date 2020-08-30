@@ -101,7 +101,9 @@ def test_save_light_204(get_model_lights, get_test_client, request_body):
                              None,
                              {'name': ''},
                              {'name': 'Test light', 'status': 2},
-                             {'name': 'Test light', 'status': -1}
+                             {'name': 'Test light', 'status': -1},
+                             {'name': 'Test light', 'status': "-1"},
+                             {'name': 1, 'status': 1}
                          ])
 def test_save_light_400(get_test_client, request_body):
     with get_test_client as app:
@@ -221,7 +223,8 @@ def test_update_name_204(get_model_lights, get_test_client):
                          [
                              {'id': 1, 'request_body': None},
                              {'id': 0, 'request_body': {'name': 'Test change name'}},
-                             {'id': 1, 'request_body': {'name': ''}}
+                             {'id': 1, 'request_body': {'name': ''}},
+                             {'id': 1, 'request_body': {'name': 1}}
                          ])
 def test_update_name_400(get_test_client, request_dict):
     with get_test_client as app:

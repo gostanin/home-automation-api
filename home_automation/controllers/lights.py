@@ -132,16 +132,16 @@ def save_light():
     if not isinstance(name, str):
         logger.warning('[POST] Lights request body incorrect value type name:string')
         return jsonify(message='Lights request body incorrect value type for name:string'), 400
-    if not isinstance(status, int):
-        logger.warning('[POST] Lights request body incorrect value type status:integer')
-        return jsonify(message='Lights request body incorrect value type for status:integer'), 400
-
     if not name:
         logger.warning('[POST] Lights request body has no [name]')
-        return jsonify(message='Light data is missing parameter: name'), 400
+        return jsonify(message='Ligsht data is missing parameter: name'), 400
+
     if not status:
         logger.warning('[POST] Lights request body has no [status]. Status set to default(0)')
         status = 0
+    if not isinstance(status, int):
+        logger.warning('[POST] Lights request body incorrect value type status:integer')
+        return jsonify(message='Lights request body incorrect value type for status:integer'), 400
     if status > 1 or status < 0:
         logger.warning('[POST] Lights status must be either 0 or 1')
         return jsonify(message='Light data is out of range[0, 1] parameter: name'), 400
