@@ -4,7 +4,7 @@ Application served on _localhost:8000/api/v1/_
 
 Swagger documentation for API endpoints on _localhost:8000/apidocs/_
 
-​#### Docker:
+#### 	Docker:
 
 ​		Run `make docker_up`
 
@@ -14,7 +14,8 @@ Swagger documentation for API endpoints on _localhost:8000/apidocs/_
 
 ​		Tear down container `make docker_down`
 
-​#### Regular installation:
+
+#### 	Regular installation:
 
 ​		Virtual environment `python -m venv .venv`
 
